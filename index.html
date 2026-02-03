@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نور رمضان - 1447 هـ</title>
+    <link rel="icon" type="image/png" href="golden-ramadan-moon-free-png.webp">
+    <!-- Google Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Scheherazade+New:wght@400;700&display=swap">
+    <!-- Css Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <!-- Header Section -->
+    <header class="hero">
+        <div class="container">
+            <h1>رمضان نور</h1>
+            <p>شهر الرحمة والمغفرة - 1447 هـ</p>
+            <div id="countdown" class="countdown">
+                <div><span id="days">00</span><small>أيام</small></div>
+                <div><span id="hours">00</span><small>ساعات</small></div>
+                <div><span id="minutes">00</span><small>دقائق</small></div>
+                <div><span id="seconds">00</span><small>ثواني</small></div>
+            </div>
+        </div>
+    </header>
+  <!-- navbar Section -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">نور رمضان <i class="fa-solid fa-moon"></i></div>
+            <button class="nav-toggle" id="nav-toggle" aria-label="فتح/إغلاق القائمة">
+                <i class="fa-solid fa-bars" id="toggle-icon"></i>
+            </button>
+            <ul class="nav-links">
+                <li><a href="#prayer">مواقيت الصلاة</a></li>
+                <li><a href="#tips">نصائح يومية</a></li>
+                <li><a href="#adhkar">أذكار</a></li>
+                <li><a href="#calendar">التقويم</a></li>
+            </ul>
+        </div>
+    </nav>
+  <!-- prayer Section -->
+    <section id="prayer" class="section prayer-section">
+        <div class="container">
+            <h2>مواقيت الصلاة - طنطا</h2>
+            <p id="prayer-date">جاري التحميل...</p>
+            <div class="prayer-grid">
+                <div class="prayer-card"><span>الفجر</span><strong id="fajr">--:--</strong></div>
+                <div class="prayer-card"><span>الشروق</span><strong id="sunrise">--:--</strong></div>
+                <div class="prayer-card"><span>الظهر</span><strong id="dhuhr">--:--</strong></div>
+                <div class="prayer-card"><span>العصر</span><strong id="asr">--:--</strong></div>
+                <div class="prayer-card highlight" id="maghrib-card"><span>المغرب</span><strong id="maghrib">--:--</strong></div>
+                <div class="prayer-card"><span>العشاء</span><strong id="isha">--:--</strong></div>
+            </div>
+            <p id="next-prayer" class="next-info">الصلاة القادمة: ...</p>
+        </div>
+    </section>
+  <!-- tips Section -->
+    <section id="tips" class="section">
+        <div class="container">
+            <h2>نصيحة يومية</h2>
+            <p id="daily-tip">اضغط للحصول على نصيحة رمضانية...</p>
+            <button onclick="getDailyTip()"><i class="fa-solid fa-lightbulb"></i> نصيحة جديدة</button>
+        </div>
+    </section>
+  <!-- adhkar Section -->
+    <section id="adhkar" class="section">
+        <div class="container">
+            <h2>أذكار رمضانية</h2>
+            <ul>
+                <li>اللهم بلغنا رمضان وأعنا على صيامه وقيامه</li>
+                <li>سبحان الله وبحمده عدد خلقه ورضا نفسه وزنة عرشه ومداد كلماته</li>
+                <li>اللهم اغفر لي ذنبي كله</li>
+            </ul>
+            <button onclick="playAdhkar()"><i class="fa-solid fa-volume-high"></i> استمع</button>
+        </div>
+    </section>
+    <!-- calendar Section -->
+    <section id="calendar" class="section">
+        <div class="container">
+            <h2>تقويم رمضان</h2>
+            <div id="ramadan-calendar" class="calendar-grid"></div>
+        </div>
+    </section>
+    <!-- footer Section -->
+    <footer>
+        <p>اللهم بلغنا رمضان وأعنا فيه على الطاعات 🌙</p>
+        <p>2026 نور رمضان</p>
+        <p>By Ahmed Elnahas &copy;</p>
+    </footer>
+
+    <script src="./main.js"></script>
+</body>
+</html>
