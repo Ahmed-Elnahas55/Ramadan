@@ -15,7 +15,7 @@
   <!-- Header Section -->
     <header class="hero">
         <div class="container">
-            <h1>رمضان نور</h1>
+            <h1>رمضان كريم</h1>
             <p>شهر الرحمة والمغفرة - 1447 هـ</p>
             <div id="countdown" class="countdown">
                 <div><span id="days">00</span><small>أيام</small></div>
@@ -25,7 +25,7 @@
             </div>
         </div>
     </header>
-  <!-- navbar Section -->
+    <!-- navbar Section -->
     <nav class="navbar">
         <div class="container nav-container">
             <div class="logo">نور رمضان <i class="fa-solid fa-moon"></i></div>
@@ -40,13 +40,13 @@
             </ul>
         </div>
     </nav>
-  <!-- prayer Section -->
+    <!-- prayer Section -->
     <section id="prayer" class="section prayer-section">
         <div class="container">
             <h2>مواقيت الصلاة - طنطا</h2>
             <p id="prayer-date">جاري التحميل...</p>
             <div class="prayer-grid">
-                <div class="prayer-card"><span>الفجر</span><strong id="fajr">--:--</strong></div>
+                <div class="prayer-card highlight"><span>الفجر</span><strong id="fajr">--:--</strong></div>
                 <div class="prayer-card"><span>الشروق</span><strong id="sunrise">--:--</strong></div>
                 <div class="prayer-card"><span>الظهر</span><strong id="dhuhr">--:--</strong></div>
                 <div class="prayer-card"><span>العصر</span><strong id="asr">--:--</strong></div>
@@ -56,7 +56,7 @@
             <p id="next-prayer" class="next-info">الصلاة القادمة: ...</p>
         </div>
     </section>
-  <!-- tips Section -->
+    <!-- tips Section -->
     <section id="tips" class="section">
         <div class="container">
             <h2>نصيحة يومية</h2>
@@ -64,8 +64,20 @@
             <button onclick="getDailyTip()"><i class="fa-solid fa-lightbulb"></i> نصيحة جديدة</button>
         </div>
     </section>
-  <!-- adhkar Section -->
-    <section id="adhkar" class="section">
+    <!-- hadith Section -->
+     <section id="hadith" class="section">
+        <div class="container">
+            <h2>حديث نبوي شريف</h2>
+            <p id="daily-hadith" style="font-size: 1.3rem; line-height: 1.8; margin: 2rem 0; padding: 1.5rem; background: rgba(212, 175, 55, 0.08); border-radius: 16px; border: 1px solid rgba(212,175,55,0.2);">
+                اضغط على الزر لعرض حديث عن رمضان...
+            </p>
+            <button onclick="getRandomHadith()">
+                <i class="fa-solid fa-book-quran"></i> حديث آخر
+            </button>
+        </div>
+    </section>
+    <!-- adhkar Section -->
+          <section id="adhkar" class="section">
         <div class="container">
             <h2>أذكار رمضانية</h2>
             <ul>
@@ -73,9 +85,95 @@
                 <li>سبحان الله وبحمده عدد خلقه ورضا نفسه وزنة عرشه ومداد كلماته</li>
                 <li>اللهم اغفر لي ذنبي كله</li>
             </ul>
-            <button onclick="playAdhkar()"><i class="fa-solid fa-volume-high"></i> استمع</button>
         </div>
     </section>
+    <!-- زر استمع / أذكار كاملة -->
+     <center>
+        <button onclick="openAdhkarModal()" class="modal-trigger-btn">
+            <i class="fa-solid fa-book-quran"></i> أذكار رمضان كاملة
+        </button>
+    </center>
+    <!-- المودال نفسه (مخفي افتراضيًا) -->
+    <div id="adhkarModal" class="adhkar-modal">
+        <div class="adhkar-modal-content">
+            <span class="close-modal" onclick="closeAdhkarModal()">&times;</span>
+            <h2>أذكار رمضان المبارك</h2>
+            <div class="dhikr-block">
+                <p><strong>دعاء رؤية هلال رمضان:</strong><br>
+                اللهم أهله علينا باليمن والإيمان والسلامة والإسلام، ربي وربك الله.</p>
+            </div>
+            <div class="dhikr-block">
+                <p><strong>دعاء عند الإفطار:</strong><br>
+                ذهب الظمأ وابتلت العروق، وثبت الأجر إن شاء الله.</p>
+            </div>
+            <div class="dhikr-block">
+                <p><strong>نية الصيام (السحور):</strong><br>
+                نويت أن أصوم غدًا عن أداء فرض شهر رمضان لهذه السنة لله تعالى.</p>
+            </div>
+            <div class="dhikr-block">
+                <p><strong>دعاء عام في رمضان:</strong><br>
+                اللهم بلغنا رمضان، وأعنا فيه على الصيام والقيام، واجعله لنا شهر خير وبركة ومغفرة.</p>
+            </div>
+            <div class="dhikr-block">
+                <p><strong>التسبيح المستحب:</strong><br>
+                سبحان الله وبحمده عدد خلقه ورضا نفسه وزنة عرشه ومداد كلماته (ثلاث مرات أو أكثر).</p>
+            </div>
+            <div class="dhikr-block">
+                <p><strong>الاستغفار:</strong><br>
+                أستغفر الله العظيم الذي لا إله إلا هو الحي القيوم وأتوب إليه (100 مرة أو أكثر).</p>
+            </div>
+            <div class="dhikr-block">
+                <p><strong>دعاء الختم:</strong><br>
+                اللهم اجعلنا ممن يقوم رمضان إيمانًا واحتسابًا، ويغفر له ما تقدم من ذنبه.</p>
+            </div>
+            <!-- أدعية ليلة القدر -->
+            <h3 style="color: var(--accent); text-align: center; margin: 30px 0 15px;">أدعية ليلة القدر</h3>
+            <div class="dhikr-block">
+                <p><strong>دعاء ليلة القدر (1):</strong><br>
+                اللهم إنك عفو تحب العفو فاعفُ عنا.</p>
+            </div>
+            <div class="dhikr-block">
+                <p><strong>دعاء ليلة القدر (2):</strong><br>
+                اللهم اجعلنا في هذه الليلة من عتقائك من النار، واكتب لنا المغفرة والرحمة.</p>
+            </div>
+            <div class="dhikr-block">
+                <p><strong>دعاء ليلة القدر (3):</strong><br>
+                اللهم لا تحرمنا خير ما عندك بشر ما عندنا، وبلّغنا فضل ليلة القدر.</p>
+            </div>
+            <div class="dhikr-block">
+                <p><strong>دعاء ليلة القدر (4):</strong><br>
+                اللهم اكتب لنا فيها دعوة لا تُرد، ورزقًا لا يُعد، وبابًا إلى الجنة لا يُسد.</p>
+            </div>
+            <!-- أذكار بعد الصلاة -->
+            <h3 style="color: var(--accent); text-align: center; margin: 40px 0 15px;">أذكار الصلاة بعد الصلاة</h3>
+            <div class="dhikr-block">
+                <p><strong>الاستغفار بعد الصلاة:</strong><br>
+                أستغفر الله، أستغفر الله، أستغفر الله.</p>
+            </div>
+            <div class="dhikr-block">
+                <p><strong>ذكر السلام:</strong><br>
+                اللهم أنت السلام ومنك السلام تباركت يا ذا الجلال والإكرام.</p>
+            </div>
+            <div class="dhikr-block">
+                <p><strong>التسبيح والتحميد والتكبير:</strong><br>
+                سبحان الله (33)، الحمد لله (33)، الله أكبر (33).<br>
+                لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير.(1)
+                </p>
+            </div>
+            <div class="dhikr-block">
+                <p><strong>ذكر التوحيد:</strong><br>
+                لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير.</p>
+            </div>
+           <div class="dhikr-block">
+                <p><strong>آية الكرسي:</strong><br>
+                اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَّهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَن ذَا الَّذِي يَشْفَعُ عِندَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَؤُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ.
+                </p>
+            </div>
+            <p style="text-align:center; margin-top:30px; color:#94a3b8;">
+                اللهم اجعلنا من عتقاء النار في هذا الشهر الكريم
+            </p>
+        </div>
+    </div>
     <!-- calendar Section -->
     <section id="calendar" class="section">
         <div class="container">

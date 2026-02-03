@@ -61,9 +61,77 @@ function getDailyTip() {
     const tip = tips[Math.floor(Math.random() * tips.length)];
     document.getElementById('daily-tip').textContent = tip;
 }
+// -------------------  احاديث -------------------
+const hadiths = [
+    {
+        text: "من صام رمضان إيمانًا واحتسابًا غفر له ما تقدم من ذنبه.",
+        source: "متفق عليه (البخاري ومسلم)"
+    },
+    {
+        text: "إذا جاء رمضان فتحت أبواب الجنة، وغلقت أبواب النار، وصفدت الشياطين.",
+        source: "رواه مسلم"
+    },
+    {
+        text: "من قام رمضان إيمانًا واحتسابًا غفر له ما تقدم من ذنبه.",
+        source: "متفق عليه"
+    },
+    {
+        text: "الصوم جنة، فلا يرفث ولا يجهل، وإن امرؤ قاتله أو شاتمه فليقل: إني صائم.",
+        source: "متفق عليه"
+    },
+    {
+        text: "كل عمل ابن آدم له إلا الصوم، فإنه لي وأنا أجزي به، ولخلوف فم الصائم أطيب عند الله من ريح المسك.",
+        source: "رواه البخاري ومسلم"
+    },
+    {
+        text: "من صام رمضان ثم أتبعه ستًا من شوال كان كصيام الدهر.",
+        source: "رواه مسلم"
+    },
+    {
+        text: "رُب صائم ليس له من صيامه إلا الجوع، ورب قائم ليس له من قيامه إلا السهر.",
+        source: "رواه أحمد والحاكم وصححه الألباني"
+    },
+    {
+        text: "الصلوات الخمس، والجمعة إلى الجمعة، ورمضان إلى رمضان مكفرات ما بينهن إذا اجتنب الكبائر.",
+        source: "رواه مسلم"
+    },
+    {
+        text: "إذا كان أول ليلة من شهر رمضان صفدت الشياطين ومردة الجن، وغلقت أبواب النار، وفتحت أبواب الجنة.",
+        source: "رواه الترمذي وصححه الألباني"
+    },
+    {
+        text: "لله عتقاء من النار في كل ليلة من رمضان، وذلك كل ليلة.",
+        source: "رواه الترمذي"
+    }
+];
+function getRandomHadith() {
+    const randomIndex = Math.floor(Math.random() * hadiths.length);
+    const hadith = hadiths[randomIndex];
+    
+    document.getElementById('daily-hadith').innerHTML = 
+        `"${hadith.text}"<br><br><small style="color: var(--accent);">${hadith.source}</small>`;
+}
+// عرض حديث افتراضي عند تحميل الصفحة
+window.addEventListener('load', () => {
+    getRandomHadith();  // أو احذف السطر ده لو مش عايز حديث يظهر تلقائيًا
+});
 // ------------------- أذكار بسيطة -------------------
-function playAdhkar() {
-    alert("اللهم بلغنا رمضان وأعنا على صيامه وقيامه يا رب العالمين.");
+// فتح المودال
+function openAdhkarModal() {
+    document.getElementById("adhkarModal").style.display = "block";
+}
+
+// إغلاق المودال
+function closeAdhkarModal() {
+    document.getElementById("adhkarModal").style.display = "none";
+}
+
+// إغلاق المودال بالضغط خارج المحتوى
+window.onclick = function(event) {
+    const modal = document.getElementById("adhkarModal");
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
 }
 // ------------------- تحويل الوقت إلى نظام 12 ساعة -------------------
 function to12HourFormat(time24) {
