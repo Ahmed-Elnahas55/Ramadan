@@ -57,18 +57,24 @@
         </div>
     </section>
     <!-- tips Section -->
-    <section id="tips" class="section">
+    <section id="tips" class="section tips-section">
         <div class="container">
             <h2>نصيحة يومية</h2>
-            <p id="daily-tip">اضغط للحصول على نصيحة رمضانية...</p>
-            <button onclick="getDailyTip()"><i class="fa-solid fa-lightbulb"></i> نصيحة جديدة</button>
+            <div class="daily-tip-card">
+                <p id="daily-tip">
+                    اضغط على الزر للحصول على نصيحة رمضانية مفيدة...
+                </p>
+            </div>
+            <button onclick="getDailyTip()" class="tip-btn">
+                <i class="fa-solid fa-lightbulb"></i> نصيحة جديدة
+            </button>
         </div>
     </section>
     <!-- hadith Section -->
      <section id="hadith" class="section">
         <div class="container">
             <h2>حديث نبوي شريف</h2>
-            <p id="daily-hadith" style="font-size: 1.3rem; line-height: 1.8; margin: 2rem 0; padding: 1.5rem; background: rgba(212, 175, 55, 0.08); border-radius: 16px; border: 1px solid rgba(212,175,55,0.2);">
+            <p id="daily-hadith" class="hadith-card">
                 اضغط على الزر لعرض حديث عن رمضان...
             </p>
             <button onclick="getRandomHadith()">
