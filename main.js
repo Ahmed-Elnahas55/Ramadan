@@ -133,19 +133,16 @@ window.onclick = function(event) {
         modal.style.display = "none";
     }
 }
-// ------------------- تحويل الوقت إلى نظام 12 ساعة -------------------
+// دالة تحويل 24 ساعة إلى 12 ساعة مع ص/م
 function to12HourFormat(time24) {
     if (!time24 || time24 === '--:--') return time24;
-
     let [hours, minutes] = time24.split(':').map(Number);
     const period = hours >= 12 ? 'م' : 'ص';
-
-    hours = hours % 12;
-    hours = hours === 0 ? 12 : hours;
-
+    hours = hours % 12 || 12;
     return `${hours}:${minutes.toString().padStart(2, '0')} ${period}`;
 }
-// ------------------- جلب مواقيت الصلاة - طنطا -------------------
+
+// جلب مواقيت الصلاة لليوم الحالي في طنطا
 async function fetchPrayerTimes() {
     try {
         const res = await fetch('http://api.aladhan.com/v1/timingsByCity?city=Tanta&country=Egypt&method=5');
@@ -153,7 +150,9 @@ async function fetchPrayerTimes() {
 
         if (data.code === 200) {
             const t = data.data.timings;
-            document.getElementById('prayer-date').textContent = `اليوم: ${data.data.date.readable}`;
+            const dateReadable = data.data.date.readable; // التاريخ الميلادي واليوم
+
+            document.getElementById('prayer-date').textContent = `اليوم: ${dateReadable}`;
 
             document.getElementById('fajr').textContent    = to12HourFormat(t.Fajr);
             document.getElementById('sunrise').textContent = to12HourFormat(t.Sunrise);
@@ -164,33 +163,33 @@ async function fetchPrayerTimes() {
 
             calculateNextPrayer(t);
         } else {
-            throw new Error("API response not 200");
+            throw new Error("مشكلة في الـ API");
         }
     } catch (error) {
-        console.error("خطأ في جلب مواقيت الصلاة:", error);
+        console.error("خطأ في جلب المواقيت:", error);
 
-        document.getElementById('prayer-date').textContent = 'غير متاح حاليًا (تقريبي - طنطا)';
+        // Fallback لليوم الحالي (تقريبي - يمكن تعديله يدويًا كل يوم لو الـ API down)
+        document.getElementById('prayer-date').textContent = 'غير متاح حاليًا (تقريبي - طنطا اليوم)';
+        document.getElementById('fajr').textContent    = '5:17 ص';
+        document.getElementById('sunrise').textContent = '6:47 ص';
+        document.getElementById('dhuhr').textContent   = '12:10 م';
+        document.getElementById('asr').textContent     = '3:12 م';
+        document.getElementById('maghrib').textContent = '5:33 م';
+        document.getElementById('isha').textContent    = '6:53 م';
 
-        // fallback تقريبي بنظام 12 ساعة
-        document.getElementById('fajr').textContent    = '5:10 ص';
-        document.getElementById('sunrise').textContent = '6:35 ص';
-        document.getElementById('dhuhr').textContent   = '12:00 م';
-        document.getElementById('asr').textContent     = '3:15 م';
-        document.getElementById('maghrib').textContent = '5:35 م';
-        document.getElementById('isha').textContent    = '7:05 م';
-
-        document.getElementById('next-prayer').textContent = 'تحقق من تقويم محلي موثوق';
+        document.getElementById('next-prayer').textContent = 'تحقق من تقويم موثوق أو تطبيق أذان';
     }
 }
-// ------------------- حساب الصلاة القادمة -------------------
+
+// حساب الصلاة القادمة (نفس السابق مع تعديل بسيط)
 function calculateNextPrayer(timings) {
     const now = new Date();
     const prayers = [
-        { name: 'الفجر',   time: timings.Fajr    || '05:10' },
-        { name: 'الظهر',   time: timings.Dhuhr   || '12:00' },
-        { name: 'العصر',   time: timings.Asr     || '15:15' },
-        { name: 'المغرب',  time: timings.Maghrib || '17:35' },
-        { name: 'العشاء',  time: timings.Isha    || '19:05' }
+        { name: 'الفجر',   time: timings.Fajr    || '05:17' },
+        { name: 'الظهر',   time: timings.Dhuhr   || '12:10' },
+        { name: 'العصر',   time: timings.Asr     || '15:12' },
+        { name: 'المغرب',  time: timings.Maghrib || '17:33' },
+        { name: 'العشاء',  time: timings.Isha    || '18:53' }
     ];
 
     let next = null;
@@ -199,10 +198,7 @@ function calculateNextPrayer(timings) {
     prayers.forEach(p => {
         let [h, m] = p.time.split(':').map(Number);
         let prayerTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m);
-
-        if (prayerTime < now) {
-            prayerTime.setDate(prayerTime.getDate() + 1);
-        }
+        if (prayerTime < now) prayerTime.setDate(prayerTime.getDate() + 1);
 
         const diff = prayerTime - now;
         if (diff > 0 && diff < minDiff) {
@@ -212,15 +208,18 @@ function calculateNextPrayer(timings) {
     });
 
     if (next) {
-        const hours   = Math.floor(minDiff / (1000 * 60 * 60));
-        const minutes = Math.floor((minDiff % (1000 * 60 * 60)) / (1000 * 60));
-
-        document.getElementById('next-prayer').textContent =
+        const hours = Math.floor(minDiff / 3600000);
+        const minutes = Math.floor((minDiff % 3600000) / 60000);
+        document.getElementById('next-prayer').textContent = 
             `الصلاة القادمة: ${next.name} بعد ${hours} س و ${minutes} د`;
     } else {
         document.getElementById('next-prayer').textContent = 'كل الصلوات انتهت اليوم إن شاء الله';
     }
 }
+
+// استدعاء الدالة عند التحميل + تحديث كل دقيقة
+window.addEventListener('load', fetchPrayerTimes);
+setInterval(fetchPrayerTimes, 60000);
 // ------------------- تشغيل الدوال عند التحميل -------------------
 window.addEventListener('load', () => {
     fetchPrayerTimes();
