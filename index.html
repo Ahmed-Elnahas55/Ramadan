@@ -18,15 +18,18 @@
             <h1>رمضان كريم</h1>
             <p>شهر الرحمة والمغفرة - 1447 هـ</p>
             <div id="countdown" class="countdown">
-                <div><span id="days">00</span><small>أيام</small></div>
-                <div><span id="hours">00</span><small>ساعات</small></div>
-                <div><span id="minutes">00</span><small>دقائق</small></div>
-                <div><span id="seconds">00</span><small>ثواني</small></div>
+                <div class="time"><span id="days">00</span><small>أيام</small></div>
+                <div class="time"><span id="hours">00</span><small>ساعات</small></div>
+                <div class="time"><span id="minutes">00</span><small>دقائق</small></div>
+                <div class="time"><span id="seconds">00</span><small>ثواني</small></div>
             </div>
         </div>
     </header>
     <!-- navbar Section -->
     <nav class="navbar">
+        <button id="theme-toggle" class="theme-btn" aria-label="تبديل الوضع">
+             <i class="fa-solid fa-moon"></i>  <!-- أيقونة القمر للـ Dark -->
+        </button>
         <div class="container nav-container">
             <div class="logo">نور رمضان <i class="fa-solid fa-moon"></i></div>
             <button class="nav-toggle" id="nav-toggle" aria-label="فتح/إغلاق القائمة">
@@ -77,7 +80,7 @@
             <p id="daily-hadith" class="hadith-card">
                 اضغط على الزر لعرض حديث عن رمضان...
             </p>
-            <button onclick="getRandomHadith()">
+            <button onclick="getRandomHadith()" class="hadith-btn">
                 <i class="fa-solid fa-book-quran"></i> حديث آخر
             </button>
         </div>

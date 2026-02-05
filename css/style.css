@@ -389,3 +389,75 @@ footer {
       font-size: 32px;
   }
 }
+/* ================================Change Mood==========================*/
+:root {
+  --bg-color: #0f172a;
+  --text-color: #e2e8f0;
+  --card-bg: rgba(212, 175, 55, 0.08);
+  --accent: #d4af37;
+  --border: rgba(212, 175, 55, 0.18);
+}
+/* الوضع الفاتح (Light/White) */
+[data-theme="light"] {
+  --bg-color: #f8f9fa;
+  --hed-color: linear-gradient( rgb(212, 175, 55), rgba(212, 175, 55, 0.08)), url(https://source.unsplash.com/random/1600x900/?moon,night,stars);
+  --text-color: #1f2937;
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --accent: #b45309; /* ذهبي غامق عشان يناسب الخلفية الفاتحة */
+  --border: rgba(180, 83, 9, 0.2);
+}
+/* خلفية الصفحة */
+body {
+  background: var(--bg-color);
+  color: var(--text-color);
+  transition: background 0.4s ease, color 0.4s ease;
+}
+.hero{
+  background: var(--hed-color);
+}
+h1{
+  color: white;
+}
+.navbar .logo{
+  color: rgb(245, 248, 255);
+}
+.countdown .time{
+  border: 1px solid rgb(205, 158, 2);
+}
+/* الكروت والعناصر */
+.calendar-day, .daily-tip-card, .dhikr-block, .prayer-card {
+  background: var(--card-bg);
+  border: 1px solid rgba(180, 83, 9, 0.581);
+  color: var(--text-color);
+}
+.daily-tip-card{
+ background:rgba(212, 175, 55, 0.08);
+}
+/* ======================buttons==================== */
+.tip-btn, .modal-trigger-btn, .hadith-btn{
+  background: rgba(15, 23, 42, 0.92);
+  color: white;
+}
+/* الزر نفسه */
+.theme-btn {
+  position: absolute;
+  top: 15px;
+  left: 10px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 50%;
+}
+.theme-btn:hover {
+  background: white;
+}
+footer{
+  background: var(--hed-color);
+}
+/* تغيير الأيقونة عند الوضع الفاتح */
+[data-theme="light"] .theme-btn i.fa-moon {
+  content: "\f185"; /* أيقونة الشمس من Font Awesome */
+}

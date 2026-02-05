@@ -1,6 +1,4 @@
-// شغلها أول مرة + كل ما تسكرول
-window.addEventListener('scroll', revealOnScroll);
-window.addEventListener('load', revealOnScroll);
+
 // ------------------- العداد التنازلي -------------------
 const ramadanDate = new Date('2026-02-18T00:00:00+02:00'); // توقيت مصر - يمكن تعديله حسب الرؤية الرسمية
 
@@ -274,20 +272,6 @@ function generateCalendar() {
     }
 }
 generateCalendar();
-// Scroll reveal animation بسيطة جدًا بدون مكتبات خارجية
-function revealOnScroll() {
-    const sections = document.querySelectorAll('.section');
-    const windowHeight = window.innerHeight;
-
-    sections.forEach(section => {
-        const sectionTop = section.getBoundingClientRect().top;
-        const revealPoint = 150; // المسافة من أسفل الشاشة
-
-        if (sectionTop < windowHeight - revealPoint) {
-            section.classList.add('visible');
-        }
-    });
-}
 // ==================== Scroll Reveal =========================
 function revealSections() {
     const sections = document.querySelectorAll('.section');
@@ -306,4 +290,31 @@ function revealSections() {
 }
 window.addEventListener('scroll', revealSections);
 window.addEventListener('load', revealSections);
-revealSections(); 
+revealSections();           
+// ====================== Dark / Light Mode Toggle=======================
+const themeToggle = document.getElementById('theme-toggle');
+const html = document.documentElement;
+const savedTheme = localStorage.getItem('theme') || 'dark';
+html.setAttribute('data-theme', savedTheme);
+
+function updateIcon() {
+    if (themeToggle) {
+        if (html.getAttribute('data-theme') === 'light') {
+            themeToggle.innerHTML = '<i class="fa-solid fa-sun"></i>';
+        } else {
+            themeToggle.innerHTML = '<i class="fa-solid fa-moon"></i>';
+        }
+    }
+}
+updateIcon();
+
+if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+        let currentTheme = html.getAttribute('data-theme');
+        let newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateIcon();
+    });
+}
