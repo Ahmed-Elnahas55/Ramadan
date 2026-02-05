@@ -453,6 +453,7 @@ h1{
 }
 .theme-btn:hover {
   background: white;
+  color: #1e293b;
 }
 footer{
   background: var(--hed-color);
