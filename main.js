@@ -1,3 +1,6 @@
+// شغلها أول مرة + كل ما تسكرول
+window.addEventListener('scroll', revealOnScroll);
+window.addEventListener('load', revealOnScroll);
 // ------------------- العداد التنازلي -------------------
 const ramadanDate = new Date('2026-02-18T00:00:00+02:00'); // توقيت مصر - يمكن تعديله حسب الرؤية الرسمية
 
@@ -23,7 +26,6 @@ function updateCountdown() {
 
 setInterval(updateCountdown, 1000);
 updateCountdown();
-
 // ------------------- نصائح يومية -------------------
 const tips = [
   "اشرب ماء كثير في السحور لتجنب الجفاف.",
@@ -33,13 +35,13 @@ const tips = [
   "حافظ على صلاة التراويح والقيام.",
   "ابتسم في وجه أخيك فهي صدقة.",
   "احرص على السحور ولو بجرعة ماء.",
-  "لو نسيت الدعاء، ابتسم للسماء وكررها.",
+  "استغل أوقات الإجابة: قبل الفطار، بعد الفجر، وآخر الليل",
   "قبل الأكل قل بسم الله وابتعد عن السرعة.",
   "شارك وجبتك مع جارك أو صديق.",
   "استمع للقرآن أثناء إعداد الطعام.",
   "خذ نفس عميق قبل الإفطار، هيساعد معدتك.",
+  "صلّي على قد ما تقدر في المسجد أو في البيت بخشوع مش بالكثرة.",
   "حاول تنام مبكرًا عشان تقوم الليل بسهولة.",
-  "لو جعت قبل الوقت، اشرب ماء بدل الأكل.",
   "سجل إنجازاتك في رمضان، حتى لو بسيطة.",
   "شارك نكتة رمضانية مع أصحابك.",
   "لو أكلت زيادة، امشي شوية لتخفيف الثقل.",
@@ -52,8 +54,8 @@ const tips = [
   "ادعي لوالديك كل يوم.",
   "لو اتأخرت عن الفطار، ابتسم وما تزعلش.",
   "ساعد شخص محتاج ولو بكلمة طيبة.",
-  "اشرب شاي أعشاب بعد الإفطار لراحة المعدة.",
   "لا تنسى غسل اليدين قبل وبعد الأكل.",
+  "اشرب شاي أعشاب بعد الإفطار لراحة المعدة.",
   "استمتع باللحظة مع أهلك عند الإفطار.",
   "كل يوم حاول تعمل عمل خير جديد."
 ];
@@ -180,7 +182,6 @@ async function fetchPrayerTimes() {
         document.getElementById('next-prayer').textContent = 'تحقق من تقويم موثوق أو تطبيق أذان';
     }
 }
-
 // حساب الصلاة القادمة (نفس السابق مع تعديل بسيط)
 function calculateNextPrayer(timings) {
     const now = new Date();
@@ -191,10 +192,8 @@ function calculateNextPrayer(timings) {
         { name: 'المغرب',  time: timings.Maghrib || '17:33' },
         { name: 'العشاء',  time: timings.Isha    || '18:53' }
     ];
-
     let next = null;
     let minDiff = Infinity;
-
     prayers.forEach(p => {
         let [h, m] = p.time.split(':').map(Number);
         let prayerTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m);
@@ -216,7 +215,6 @@ function calculateNextPrayer(timings) {
         document.getElementById('next-prayer').textContent = 'كل الصلوات انتهت اليوم إن شاء الله';
     }
 }
-
 // استدعاء الدالة عند التحميل + تحديث كل دقيقة
 window.addEventListener('load', fetchPrayerTimes);
 setInterval(fetchPrayerTimes, 60000);
@@ -228,15 +226,84 @@ window.addEventListener('load', () => {
 setInterval(fetchPrayerTimes, 60000); // تحديث كل دقيقة
 
 // ------------------- تقويم رمضان بسيط -------------------
+// تقويم رمضان يبدأ من أول يوم رمضان
 function generateCalendar() {
     const cal = document.getElementById('ramadan-calendar');
     if (!cal) return;
 
-    for (let d = 1; d <= 30; d++) {
-        const day = document.createElement('div');
-        day.className = 'calendar-day';
-        day.innerHTML = `يوم ${d}<br><small>${tips[(d-1) % tips.length].slice(0,30)}...</small>`;
-        cal.appendChild(day);
+    cal.innerHTML = ''; // إفراغ القسم
+
+    // تاريخ بداية رمضان (غيّره حسب السنة الفعلية)
+    const ramadanStart = new Date('2026-02-18T00:00:00+02:00'); // توقيت مصر
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // نحدد اليوم بدون ساعة
+
+    // حساب عدد الأيام من بداية رمضان
+    let daysSinceStart = Math.floor((today - ramadanStart) / (1000 * 60 * 60 * 24));
+
+    // لو قبل رمضان، نبدأ من اليوم 1
+    if (daysSinceStart < 0) {
+        daysSinceStart = 0;
+    }
+
+    for (let i = 0; i < 30; i++) {
+        const dayNum = daysSinceStart + i + 1; // اليوم 1، 2، 3...
+        const tipIndex = i % tips.length;
+        const fullTip = tips[tipIndex];
+
+        const dayDiv = document.createElement('div');
+        dayDiv.className = 'calendar-day';
+
+        // تمييز اليوم الحالي
+        if (dayNum === daysSinceStart + 1) {
+            dayDiv.classList.add('today');
+        }
+
+        dayDiv.innerHTML = `
+            <div class="day-header">
+                <strong>اليوم ${dayNum}</strong>
+                ${dayNum === daysSinceStart + 1 ? '<span class="today-label">(اليوم)</span>' : ''}
+            </div>
+            <div class="day-tip">
+                ${fullTip}
+            </div>
+        `;
+
+        cal.appendChild(dayDiv);
     }
 }
 generateCalendar();
+// Scroll reveal animation بسيطة جدًا بدون مكتبات خارجية
+function revealOnScroll() {
+    const sections = document.querySelectorAll('.section');
+    const windowHeight = window.innerHeight;
+
+    sections.forEach(section => {
+        const sectionTop = section.getBoundingClientRect().top;
+        const revealPoint = 150; // المسافة من أسفل الشاشة
+
+        if (sectionTop < windowHeight - revealPoint) {
+            section.classList.add('visible');
+        }
+    });
+}
+// ==================== Scroll Reveal =========================
+function revealSections() {
+    const sections = document.querySelectorAll('.section');
+    const windowHeight = window.innerHeight;
+    const revealPoint = windowHeight * 0.80;  
+
+    sections.forEach((section, index) => {
+        const sectionTop = section.getBoundingClientRect().top;
+
+        if (sectionTop < revealPoint) {
+            section.classList.add('visible');
+            if (index === 0) section.classList.add('delay-1');
+            if (index === 1) section.classList.add('delay-2');
+        }
+    });
+}
+window.addEventListener('scroll', revealSections);
+window.addEventListener('load', revealSections);
+revealSections(); 
