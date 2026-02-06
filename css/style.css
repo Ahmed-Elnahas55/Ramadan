@@ -400,10 +400,13 @@ footer {
 /* الوضع الفاتح (Light/White) */
 [data-theme="light"] {
   --bg-color: #f8f9fa;
-  --hed-color: linear-gradient( rgb(212, 175, 55), rgba(212, 175, 55, 0.08)), url(https://source.unsplash.com/random/1600x900/?moon,night,stars);
+  --hed-color: linear-gradient(rgb(212, 175, 55), rgba(212, 175, 55, 0.08));
+  --footer-color: linear-gradient( rgba(212, 175, 55, 0.3), rgb(212, 175, 55));
   --text-color: #1f2937;
   --card-bg: rgba(255, 255, 255, 0.9);
   --accent: #b45309;
+  --btn-color: #1f2937; /* زرار غامق */
+  --btn-text: #ffffff;
   --border: rgba(180, 83, 9, 0.2);
 }
 /* خلفية الصفحة */
@@ -417,6 +420,9 @@ body {
 }
 h1{
   color: white;
+}
+.navbar{
+  background: var(--accent);
 }
 .navbar .logo{
   color: rgb(245, 248, 255);
@@ -435,10 +441,8 @@ h1{
 }
 /* ======================buttons==================== */
 .tip-btn, .modal-trigger-btn, .hadith-btn{
-  background: rgba(15, 23, 42, 0.92);
   color: white;
 }
-/* الزر نفسه */
 .theme-btn {
   position: absolute;
   top: 20px;
@@ -455,12 +459,13 @@ h1{
   background: white;
   color: #1e293b;
 }
+/* ==============footer==================== */
 footer{
-  background: var(--hed-color);
+  background: var(--footer-color);
 }
-/* تغيير الأيقونة عند الوضع الفاتح */
+/* Change Icon when On/Off */
 [data-theme="light"] .theme-btn i.fa-moon {
-  content: "\f185"; /* أيقونة الشمس من Font Awesome */
+  content: "\f185"; 
 }
 /* Responsive button */
 @media (max-width: 820px) {
