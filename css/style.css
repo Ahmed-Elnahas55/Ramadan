@@ -403,7 +403,7 @@ footer {
   --hed-color: linear-gradient( rgb(212, 175, 55), rgba(212, 175, 55, 0.08)), url(https://source.unsplash.com/random/1600x900/?moon,night,stars);
   --text-color: #1f2937;
   --card-bg: rgba(255, 255, 255, 0.9);
-  --accent: #b45309; /* ذهبي غامق عشان يناسب الخلفية الفاتحة */
+  --accent: #b45309;
   --border: rgba(180, 83, 9, 0.2);
 }
 /* خلفية الصفحة */
@@ -424,7 +424,7 @@ h1{
 .countdown .time{
   border: 1px solid rgb(205, 158, 2);
 }
-/* الكروت والعناصر */
+/* Card and Elements*/
 .calendar-day, .daily-tip-card, .dhikr-block, .prayer-card {
   background: var(--card-bg);
   border: 1px solid rgba(180, 83, 9, 0.581);
@@ -441,7 +441,7 @@ h1{
 /* الزر نفسه */
 .theme-btn {
   position: absolute;
-  top: 15px;
+  top: 20px;
   left: 10px;
   background: none;
   border: none;
@@ -461,4 +461,11 @@ footer{
 /* تغيير الأيقونة عند الوضع الفاتح */
 [data-theme="light"] .theme-btn i.fa-moon {
   content: "\f185"; /* أيقونة الشمس من Font Awesome */
+}
+/* Responsive button */
+@media (max-width: 820px) {
+  .theme-btn {
+    top: 20px;
+    left: 65px;
+  }
 }
