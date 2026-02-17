@@ -422,7 +422,7 @@ h1{
   color: white;
 }
 .navbar{
-  background: var(--accent);
+  background: var(--bg);
 }
 .navbar .logo{
   color: rgb(245, 248, 255);
