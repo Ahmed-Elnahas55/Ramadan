@@ -1,6 +1,6 @@
 
 // ------------------- العداد التنازلي -------------------
-const ramadanDate = new Date('2026-02-19T00:00:00+02:00'); // توقيت مصر - يمكن تعديله حسب الرؤية الرسمية
+const ramadanDate = new Date('2026-02-18T00:00:00+02:00'); // توقيت مصر - يمكن تعديله حسب الرؤية الرسمية
 
 function updateCountdown() {
     const now = new Date();
@@ -333,4 +333,5 @@ backToTopBtn.addEventListener('click', () => {
     top: 0,
     behavior: 'smooth'
   });
+
 });
