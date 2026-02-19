@@ -1,6 +1,6 @@
 
 // ------------------- العداد التنازلي -------------------
-const ramadanDate = new Date('2026-02-18T00:00:00+02:00'); // توقيت مصر - يمكن تعديله حسب الرؤية الرسمية
+const ramadanDate = new Date('2026-02-19T00:00:00+02:00'); // توقيت مصر - يمكن تعديله حسب الرؤية الرسمية
 
 function updateCountdown() {
     const now = new Date();
@@ -141,16 +141,19 @@ function to12HourFormat(time24) {
     hours = hours % 12 || 12;
     return `${hours}:${minutes.toString().padStart(2, '0')} ${period}`;
 }
-
-// جلب مواقيت الصلاة لليوم الحالي في طنطا
+//////////// Pray Time //////////
 async function fetchPrayerTimes() {
     try {
-        const res = await fetch('http://api.aladhan.com/v1/timingsByCity?city=Tanta&country=Egypt&method=5');
+        // API بديل مستقر جدًا (Aladhan مع method 4 أو 5 لمصر)
+        const res = await fetch(
+            'https://api.aladhan.com/v1/timingsByCity?city=Tanta&country=Egypt&method=5&school=0'
+        );
+        
         const data = await res.json();
 
         if (data.code === 200) {
             const t = data.data.timings;
-            const dateReadable = data.data.date.readable; // التاريخ الميلادي واليوم
+            const dateReadable = data.data.date.readable;
 
             document.getElementById('prayer-date').textContent = `اليوم: ${dateReadable}`;
 
@@ -168,16 +171,17 @@ async function fetchPrayerTimes() {
     } catch (error) {
         console.error("خطأ في جلب المواقيت:", error);
 
-        // Fallback لليوم الحالي (تقريبي - يمكن تعديله يدويًا كل يوم لو الـ API down)
-        document.getElementById('prayer-date').textContent = 'غير متاح حاليًا (تقريبي - طنطا اليوم)';
-        document.getElementById('fajr').textContent    = '5:17 ص';
-        document.getElementById('sunrise').textContent = '6:47 ص';
-        document.getElementById('dhuhr').textContent   = '12:10 م';
-        document.getElementById('asr').textContent     = '3:12 م';
-        document.getElementById('maghrib').textContent = '5:33 م';
-        document.getElementById('isha').textContent    = '6:53 م';
+        // Fallback ثابت لليوم الحالي (تقريبي - طنطا)
+        // غيّر القيم دي كل يوم أو استخدم تقويم جاهز لو الـ API مش شغال
+        document.getElementById('prayer-date').textContent = 'غير متاح حاليًا (تقريبي - طنطا)';
+        document.getElementById('fajr').textContent    = '05:10 ص';
+        document.getElementById('sunrise').textContent = '06:40 ص';
+        document.getElementById('dhuhr').textContent   = '12:05 م';
+        document.getElementById('asr').textContent     = '03:10 م';
+        document.getElementById('maghrib').textContent = '05:35 م';
+        document.getElementById('isha').textContent    = '07:00 م';
 
-        document.getElementById('next-prayer').textContent = 'تحقق من تقويم موثوق أو تطبيق أذان';
+        document.getElementById('next-prayer').textContent = 'تحقق من تطبيق أذان أو موقع موثوق';
     }
 }
 // حساب الصلاة القادمة (نفس السابق مع تعديل بسيط)
@@ -213,47 +217,44 @@ function calculateNextPrayer(timings) {
         document.getElementById('next-prayer').textContent = 'كل الصلوات انتهت اليوم إن شاء الله';
     }
 }
-// استدعاء الدالة عند التحميل + تحديث كل دقيقة
 window.addEventListener('load', fetchPrayerTimes);
 setInterval(fetchPrayerTimes, 60000);
-// ------------------- تشغيل الدوال عند التحميل -------------------
+// ------------------- Function activation during loading-------------------
 window.addEventListener('load', () => {
     fetchPrayerTimes();
-    getDailyTip();           // نصيحة افتراضية عند التحميل
+    getDailyTip();          
 });
-setInterval(fetchPrayerTimes, 60000); // تحديث كل دقيقة
+setInterval(fetchPrayerTimes, 60000); 
 
-// ------------------- تقويم رمضان بسيط -------------------
-// تقويم رمضان يبدأ من أول يوم رمضان
+// ------------------- Simple Ramadan calendar-------------------
 function generateCalendar() {
     const cal = document.getElementById('ramadan-calendar');
     if (!cal) return;
+    cal.innerHTML = '';
 
-    cal.innerHTML = ''; // إفراغ القسم
-
-    // تاريخ بداية رمضان (غيّره حسب السنة الفعلية)
-    const ramadanStart = new Date('2026-02-18T00:00:00+02:00'); // توقيت مصر
-
+    const ramadanStart = new Date('2026-02-19T00:00:00+02:00'); 
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // نحدد اليوم بدون ساعة
+    today.setHours(0, 0, 0, 0);
 
-    // حساب عدد الأيام من بداية رمضان
     let daysSinceStart = Math.floor((today - ramadanStart) / (1000 * 60 * 60 * 24));
 
-    // لو قبل رمضان، نبدأ من اليوم 1
     if (daysSinceStart < 0) {
         daysSinceStart = 0;
     }
 
+    if (daysSinceStart >= 30) {
+        cal.innerHTML = '<p style="text-align:center; color:var(--accent);">رمضان انتهى لهذا العام 🌙<br>تقبل الله طاعتكم</p>';
+        return;
+    }
+
     for (let i = 0; i < 30; i++) {
-        const dayNum = daysSinceStart + i + 1; // اليوم 1، 2، 3...
+        const dayNum = daysSinceStart + i + 1;
         const tipIndex = i % tips.length;
         const fullTip = tips[tipIndex];
 
         const dayDiv = document.createElement('div');
         dayDiv.className = 'calendar-day';
 
-        // تمييز اليوم الحالي
         if (dayNum === daysSinceStart + 1) {
             dayDiv.classList.add('today');
         }
@@ -271,7 +272,7 @@ function generateCalendar() {
         cal.appendChild(dayDiv);
     }
 }
-generateCalendar();
+window.addEventListener('load', generateCalendar);
 // ==================== Scroll Reveal =========================
 function revealSections() {
     const sections = document.querySelectorAll('.section');
@@ -333,5 +334,4 @@ backToTopBtn.addEventListener('click', () => {
     top: 0,
     behavior: 'smooth'
   });
-
 });
