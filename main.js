@@ -24,7 +24,7 @@ function updateCountdown() {
 
 setInterval(updateCountdown, 1000);
 updateCountdown();
-// ------------------- نصائح يومية -------------------
+// -------------------daily Tips  -------------------
 const tips = [
   "اشرب ماء كثير في السحور لتجنب الجفاف.",
   "اقرأ جزء من القرآن يوميًا.",
@@ -111,29 +111,25 @@ function getRandomHadith() {
     document.getElementById('daily-hadith').innerHTML = 
         `"${hadith.text}"<br><br><small style="color: var(--accent);">${hadith.source}</small>`;
 }
-// عرض حديث افتراضي عند تحميل الصفحة
 window.addEventListener('load', () => {
-    getRandomHadith();  // أو احذف السطر ده لو مش عايز حديث يظهر تلقائيًا
+    getRandomHadith(); 
 });
-// ------------------- أذكار بسيطة -------------------
-// فتح المودال
+//  open model
 function openAdhkarModal() {
     document.getElementById("adhkarModal").style.display = "block";
 }
 
-// إغلاق المودال
+// closce model
 function closeAdhkarModal() {
     document.getElementById("adhkarModal").style.display = "none";
 }
 
-// إغلاق المودال بالضغط خارج المحتوى
 window.onclick = function(event) {
     const modal = document.getElementById("adhkarModal");
     if (event.target == modal) {
         modal.style.display = "none";
     }
 }
-// دالة تحويل 24 ساعة إلى 12 ساعة مع ص/م
 function to12HourFormat(time24) {
     if (!time24 || time24 === '--:--') return time24;
     let [hours, minutes] = time24.split(':').map(Number);
@@ -219,7 +215,7 @@ function calculateNextPrayer(timings) {
 }
 window.addEventListener('load', fetchPrayerTimes);
 setInterval(fetchPrayerTimes, 60000);
-// ------------------- Function activation during loading-------------------
+// ------------------- Function activation during -------------------
 window.addEventListener('load', () => {
     fetchPrayerTimes();
     getDailyTip();          
@@ -230,9 +226,11 @@ setInterval(fetchPrayerTimes, 60000);
 function generateCalendar() {
     const cal = document.getElementById('ramadan-calendar');
     if (!cal) return;
+
     cal.innerHTML = '';
 
-    const ramadanStart = new Date('2026-02-19T00:00:00+02:00'); 
+    const ramadanStart = new Date('2026-02-19T00:00:00+02:00');
+
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
@@ -242,33 +240,35 @@ function generateCalendar() {
         daysSinceStart = 0;
     }
 
-    if (daysSinceStart >= 30) {
-        cal.innerHTML = '<p style="text-align:center; color:var(--accent);">رمضان انتهى لهذا العام 🌙<br>تقبل الله طاعتكم</p>';
+    const totalDays = 29;
+
+    if (daysSinceStart >= totalDays) {
+        cal.innerHTML = '<p style="text-align:center; color:var(--accent); font-size:1.3rem; padding:2rem;">رمضان انتهى لهذا العام 🌙<br>تقبل الله منا ومنكم صالح الأعمال</p>';
         return;
     }
 
-    for (let i = 0; i < 30; i++) {
-        const dayNum = daysSinceStart + i + 1;
+    for (let i = 0; i < totalDays; i++) {
+        const dayNum = i + 1; 
         const tipIndex = i % tips.length;
         const fullTip = tips[tipIndex];
 
         const dayDiv = document.createElement('div');
         dayDiv.className = 'calendar-day';
-
         if (dayNum === daysSinceStart + 1) {
             dayDiv.classList.add('today');
+            dayDiv.innerHTML += '<span class="today-label">اليوم</span>';
         }
-
-        dayDiv.innerHTML = `
+        if (dayNum <= daysSinceStart) {
+            dayDiv.classList.add('past');
+        }
+        dayDiv.innerHTML += `
             <div class="day-header">
                 <strong>اليوم ${dayNum}</strong>
-                ${dayNum === daysSinceStart + 1 ? '<span class="today-label">(اليوم)</span>' : ''}
             </div>
             <div class="day-tip">
                 ${fullTip}
             </div>
         `;
-
         cal.appendChild(dayDiv);
     }
 }

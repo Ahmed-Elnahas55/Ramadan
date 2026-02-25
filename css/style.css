@@ -324,19 +324,25 @@ h1 { font-family: 'Amiri', serif;
   background: rgba(213, 168, 23, 0.347); 
 }
 .calendar-day.today {
-  border: 2px solid var(--accent);
-  background: rgba(212, 175, 55, 0.18) !important;
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+  background: rgb(147 79 28 / 31%) !important;
+  border: 2px solid var(--accent) !important;
   transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+  font-weight: bold;
+}
+.calendar-day.past {
+  opacity: 0.7;
+  background: rgba(148, 163, 184, 0.12);
+  border: 1px solid #475569;
 }
 .today-label {
-  font-size: 0.95rem;
-  color: var(--accent);
-  font-weight: bold;
-  margin-right: 8px;
-  background: rgba(212, 175, 55, 0.2);
+  background: var(--accent);
+  color: white;
   padding: 4px 10px;
   border-radius: 12px;
+  font-size: 0.8rem;
+  margin-right: 8px;
+  vertical-align: middle;
 }
 button {
   background: var(--accent);
