@@ -24,7 +24,50 @@ function updateCountdown() {
 
 setInterval(updateCountdown, 1000);
 updateCountdown();
-// -------------------daily Tips  -------------------
+
+// ------------------- Nav Toggle -------------------
+// Mobile Navbar Toggle
+document.addEventListener('DOMContentLoaded', function () {
+    const navToggle = document.getElementById('nav-toggle');
+    const toggleIcon = document.getElementById('toggle-icon');
+    const navLinks = document.querySelector('.nav-links');
+
+    if (!navToggle || !navLinks) {
+        console.warn('زرار التنقل أو القائمة مش موجودين في الصفحة');
+        return;
+    }
+
+    // فتح/إغلاق القائمة
+    navToggle.addEventListener('click', function () {
+        navLinks.classList.toggle('active');
+
+        // تغيير الأيقونة من bars لـ times (X)
+        if (navLinks.classList.contains('active')) {
+            toggleIcon.classList.remove('fa-bars');
+            toggleIcon.classList.add('fa-times');
+        } else {
+            toggleIcon.classList.remove('fa-times');
+            toggleIcon.classList.add('fa-bars');
+        }
+    });
+
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', function () {
+            navLinks.classList.remove('active');
+            toggleIcon.classList.remove('fa-times');
+            toggleIcon.classList.add('fa-bars');
+        });
+    });
+
+    document.addEventListener('click', function (event) {
+        if (!navToggle.contains(event.target) && !navLinks.contains(event.target)) {
+            navLinks.classList.remove('active');
+            toggleIcon.classList.remove('fa-times');
+            toggleIcon.classList.add('fa-bars');
+        }
+    });
+});
+// ------------------- daily Tips  -------------------
 const tips = [
   "اشرب ماء كثير في السحور لتجنب الجفاف.",
   "اقرأ جزء من القرآن يوميًا.",
@@ -167,8 +210,6 @@ async function fetchPrayerTimes() {
     } catch (error) {
         console.error("خطأ في جلب المواقيت:", error);
 
-        // Fallback ثابت لليوم الحالي (تقريبي - طنطا)
-        // غيّر القيم دي كل يوم أو استخدم تقويم جاهز لو الـ API مش شغال
         document.getElementById('prayer-date').textContent = 'غير متاح حاليًا (تقريبي - طنطا)';
         document.getElementById('fajr').textContent    = '05:10 ص';
         document.getElementById('sunrise').textContent = '06:40 ص';
@@ -180,7 +221,7 @@ async function fetchPrayerTimes() {
         document.getElementById('next-prayer').textContent = 'تحقق من تطبيق أذان أو موقع موثوق';
     }
 }
-// حساب الصلاة القادمة (نفس السابق مع تعديل بسيط)
+
 function calculateNextPrayer(timings) {
     const now = new Date();
     const prayers = [

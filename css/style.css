@@ -59,6 +59,33 @@ body {
 .light-theme #back-to-top {
   background: var(--accent);
 }
+/* zeina styling */
+.zeina{
+  display: flex;
+  justify-content: space-between;
+}
+.zeina img{
+  width: 11%;
+  height: auto;
+}
+.zeina .img-right{
+  transform: translateY(-10px);
+  animation: sway 5s infinite ease-in-out;
+}
+@keyframes sway {
+  0%, 100% {
+    transform: translateY(-10) rotate(-8deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(12deg);
+  }
+}
+@media (max-width: 767px) {
+  .zeina img{
+    width: 25%;
+    height: auto;
+  }
+}
 /* Header Styling */
 .container { 
   max-width: 1100px; 
