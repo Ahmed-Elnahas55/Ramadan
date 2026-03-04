@@ -377,10 +377,84 @@ backToTopBtn.addEventListener('click', () => {
   });
 });
 // ================== notification ==================
+const ramadanTips = [
+  "اشرب ماء كثير في السحور لتجنب الجفاف.",
+  "اقرأ جزء من القرآن يوميًا.",
+  "تجنب الإسراف في الطعام عند الإفطار.",
+  "أكثر من الصدقة والدعاء.",
+  "حافظ على صلاة التراويح والقيام.",
+  "ابتسم في وجه أخيك فهي صدقة.",
+  "احرص على السحور ولو بجرعة ماء.",
+  "استغل أوقات الإجابة: قبل الفطار، بعد الفجر، وآخر الليل",
+  "قبل الأكل قل بسم الله وابتعد عن السرعة.",
+  "شارك وجبتك مع جارك أو صديق.",
+  "استمع للقرآن أثناء إعداد الطعام.",
+  "خذ نفس عميق قبل الإفطار، هيساعد معدتك.",
+  "صلّي على قد ما تقدر في المسجد أو في البيت بخشوع مش بالكثرة.",
+  "حاول تنام مبكرًا عشان تقوم الليل بسهولة.",
+  "سجل إنجازاتك في رمضان، حتى لو بسيطة.",
+  "شارك نكتة رمضانية مع أصحابك.",
+  "لو أكلت زيادة، امشي شوية لتخفيف الثقل.",
+  "استغل وقت الانتظار قبل الإفطار بالذكر.",
+  "خلي طبقك متوازن، نصفه خضار وفواكه.",
+  "حافظ على ترتيب سفرتك قبل وبعد الإفطار.",
+  "اقرأ حديث قصير يوميًا.",
+  "ابتعد عن الشاشات وقت السحور لتستمتع بالنوم.",
+  "استخدم طبق صغير عشان تتحكم في الكمية.",
+  "ادعي لوالديك كل يوم.",
+  "لو اتأخرت عن الفطار، ابتسم وما تزعلش.",
+  "ساعد شخص محتاج ولو بكلمة طيبة.",
+  "لا تنسى غسل اليدين قبل وبعد الأكل.",
+  "اشرب شاي أعشاب بعد الإفطار لراحة المعدة.",
+  "استمتع باللحظة مع أهلك عند الإفطار.",
+  "كل يوم حاول تعمل عمل خير جديد."
+];
 
-document.addEventListener('DOMContentLoaded', async function () {
-  if (Notification.permission === 'granted') {
-    console.log('الإشعارات مفعلة بالفعل');
+function getRamadanDay() {
+  const ramadanStart = new Date('2026-02-19T00:00:00+02:00');
+  const today = new Date();
+  const diff = today - ramadanStart;
+  const day = Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
+  return (day >= 1 && day <= 29) ? day : null;
+}
+
+function sendRamadanNotification() {
+  const day = getRamadanDay();
+  if (!day) return; 
+
+  const tip = ramadanTips[Math.floor(Math.random() * ramadanTips.length)];
+
+  new Notification('رمضان مبارك 🌙', {
+    body: `اليوم الـ ${day} من رمضان\nنصيحة اليوم: ${tip}`,
+    icon: '/image/logo-icon.png', 
+    tag: 'ramadan-daily-' + day, 
+    renotify: false
+  });
+}
+
+function scheduleNextNotification() {
+  const now = new Date();
+  const tomorrowFajr4 = new Date(now);
+  tomorrowFajr4.setDate(tomorrowFajr4.getDate() + 1);
+  tomorrowFajr4.setHours(4, 0, 0, 0);
+
+  if (now.getHours() >= 4) {
+    tomorrowFajr4.setDate(tomorrowFajr4.getDate() + 1);
+  }
+
+  const timeUntilFajr = tomorrowFajr4 - now;
+
+  setTimeout(() => {
+    if (Notification.permission === 'granted') {
+      sendRamadanNotification();
+    }
+    scheduleNextNotification();
+  }, timeUntilFajr);
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  if (!('Notification' in window)) {
+    console.log('المتصفح لا يدعم الإشعارات');
     return;
   }
 
@@ -389,54 +463,24 @@ document.addEventListener('DOMContentLoaded', async function () {
     return;
   }
 
+  if (Notification.permission === 'granted') {
+    scheduleNextNotification();
+    return;
+  }
+
   try {
     const permission = await Notification.requestPermission();
-
     if (permission === 'granted') {
-      console.log('تم منح الإذن بنجاح');
-      
+      console.log('تم منح الإذن');
       new Notification('مرحبًا بك في نور رمضان 🌙', {
-        body: 'تم تفعيل الإشعارات! هيوصلك كل يوم رقم اليوم في رمضان + نصيحة مفيدة',
+        body: 'تم تفعيل الإشعارات! هيوصلك كل يوم الساعة 4 الفجر رقم اليوم + نصيحة',
         icon: '/image/logo-icon.png'
       });
-
-      scheduleDailyRamadanNotification();
-
-    } else if (permission === 'denied') {
-      console.log('تم رفض الإذن');
+      scheduleNextNotification();
     } else {
-      console.log('الإذن مؤجل أو default');
+      console.log('تم رفض الإذن أو تأجيله');
     }
   } catch (err) {
-    console.error('خطأ أثناء طلب الإذن:', err);
+    console.error('خطأ في طلب الإذن:', err);
   }
 });
-function scheduleDailyRamadanNotification() {
-  const now = new Date();
-  const tomorrow = new Date(now);
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  tomorrow.setHours(8, 0, 0, 0); 
-  const timeUntilTomorrow = tomorrow - now;
-
-  setTimeout(() => {
-    if (Notification.permission === 'granted') {
-      const day = getRamadanDay(); 
-      if (day) {
-        const tip = ramadanTips[Math.floor(Math.random() * ramadanTips.length)];
-        new Notification('رمضان مبارك 🌙', {
-          body: `اليوم الـ ${day} من رمضان\nنصيحة اليوم: ${tip}`,
-          icon: '/image/logo-icon.png'
-        });
-      }
-    }
-    scheduleDailyRamadanNotification();
-  }, timeUntilTomorrow);
-}
-function getRamadanDay() {
-  const ramadanStart = new Date('2026-02-19T00:00:00+02:00');
-  const today = new Date();
-  const diff = today - ramadanStart;
-  const day = Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
-
-  return (day >= 1 && day <= 29) ? day : null;
-}
