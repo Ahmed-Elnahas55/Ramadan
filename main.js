@@ -376,3 +376,67 @@ backToTopBtn.addEventListener('click', () => {
     behavior: 'smooth'
   });
 });
+// ================== notification ==================
+
+document.addEventListener('DOMContentLoaded', async function () {
+  if (Notification.permission === 'granted') {
+    console.log('الإشعارات مفعلة بالفعل');
+    return;
+  }
+
+  if (Notification.permission === 'denied') {
+    console.log('الإذن مرفوض من قبل');
+    return;
+  }
+
+  try {
+    const permission = await Notification.requestPermission();
+
+    if (permission === 'granted') {
+      console.log('تم منح الإذن بنجاح');
+      
+      new Notification('مرحبًا بك في نور رمضان 🌙', {
+        body: 'تم تفعيل الإشعارات! هيوصلك كل يوم رقم اليوم في رمضان + نصيحة مفيدة',
+        icon: '/image/logo-icon.png'
+      });
+
+      scheduleDailyRamadanNotification();
+
+    } else if (permission === 'denied') {
+      console.log('تم رفض الإذن');
+    } else {
+      console.log('الإذن مؤجل أو default');
+    }
+  } catch (err) {
+    console.error('خطأ أثناء طلب الإذن:', err);
+  }
+});
+function scheduleDailyRamadanNotification() {
+  const now = new Date();
+  const tomorrow = new Date(now);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  tomorrow.setHours(8, 0, 0, 0); 
+  const timeUntilTomorrow = tomorrow - now;
+
+  setTimeout(() => {
+    if (Notification.permission === 'granted') {
+      const day = getRamadanDay(); 
+      if (day) {
+        const tip = ramadanTips[Math.floor(Math.random() * ramadanTips.length)];
+        new Notification('رمضان مبارك 🌙', {
+          body: `اليوم الـ ${day} من رمضان\nنصيحة اليوم: ${tip}`,
+          icon: '/image/logo-icon.png'
+        });
+      }
+    }
+    scheduleDailyRamadanNotification();
+  }, timeUntilTomorrow);
+}
+function getRamadanDay() {
+  const ramadanStart = new Date('2026-02-19T00:00:00+02:00');
+  const today = new Date();
+  const diff = today - ramadanStart;
+  const day = Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
+
+  return (day >= 1 && day <= 29) ? day : null;
+}
